@@ -27,4 +27,53 @@ edition = "2023"
 ```
 
 4. アプリケーションファイルを作成：`mkdir -p src && touch main.rs`
-5. Option:アプリのビルド:`cargo clean && cargo build`
+5. Option:アプリのビルド：`cargo clean && cargo build`
+6. Dockerfileを作成する
+```Dockerfile
+# build the app.
+FROM rust:1.71 AS build-env
+
+# set the working dir.
+WORKDIR /app
+
+# copy the source and dependencies of the app.
+COPY src ./src
+COPY Cargo.toml Cargo.lock ./
+
+# build the app.
+RUN cargo build --release
+
+# set up the container.
+FROM debian:12-slim
+
+# set the working dir.
+WORKDIR /app
+
+# copy the built app binary from the build-env.
+COPY --from=build-env /app/target/release/app ./app
+
+# set the environment variable.
+ENV ROCKET_ADDRESS=0.0.0.0
+
+# expose the port.
+EXPOSE 8000
+
+# command to run the app.
+CMD ["./app"]
+```
+7. Option:Dockerデーモンの起動：`service docker start`
+8. コンテナイメージのビルド
+```bash
+docker build \
+    --no-cache \
+    --tag app-hello-rocket:latest .
+
+```
+9. コンテナの起動
+```bash
+$ docker run --rm \
+    --publish 8000:8000 \
+    --name app-local \
+    app-hello-rocket:latest
+
+```
