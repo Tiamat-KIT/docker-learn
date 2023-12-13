@@ -12,7 +12,7 @@ Dockerについて勉強するためのリポジトリ
 - 開発環境の配布が可能に
 - スクラップ＆ビルドが容易にできる
 
-### 今回運用する構成(Windows)
+### [環境構築](https://qiita.com/fsdg-adachi_h/items/2c6608a5ffc65ad0e5a7#%E3%82%B3%E3%83%B3%E3%83%86%E3%83%8A%E3%82%A4%E3%83%A1%E3%83%BC%E3%82%B8%E3%82%92%E3%83%93%E3%83%AB%E3%83%89)
 1. [Rustのインストール](https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe)
 2. プロジェクトフォルダを作る：`mkdir <project-name> && cd ./<project-name>`
 3. `Cargo.toml`を作成する
@@ -71,7 +71,7 @@ docker build \
 ```
 9. コンテナの起動
 ```bash
-$ docker run --rm \
+docker run --rm \
     --publish 8000:8000 \
     --name app-local \
     app-hello-rocket:latest
